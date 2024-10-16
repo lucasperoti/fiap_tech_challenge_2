@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrate
+spec:
+  template:
+    metadata:
+      name: django-migrate
+    spec:
+      containers:
+      - name: django-migrate
+        image: lanchonete-api:latest
+        imagePullPolicy: Never
+        command: ["python", "manage.py", "migrate"]
+        envFrom:
+        - configMapRef:
+            name: django-config
+        - secretRef:
+            name: postgres-secret
+        env:
+        - name: DATABASE_HOST
+          value: "postgres-service"
+        - name: DATABASE_PORT
+          value: "5432"
+      restartPolicy: Never
+  backoffLimit: 4

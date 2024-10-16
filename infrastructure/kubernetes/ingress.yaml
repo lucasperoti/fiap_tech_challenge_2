@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lanchonete-ingress
+spec:
+  rules:
+  - host: lanchonete.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: lanchonete-service
+            port:
+              number: 8000
